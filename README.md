@@ -15,9 +15,18 @@ Project is created with:
 ## Setup
 To run this project, install discord.py with pip (make sure to have Python 3.7 or above), you can use a virtualenv if you want:
 
+Windows:
 ```
 $ pip install discord.py
 ```
+
+Mac or Linux:
+```
+$ pip3 install discord.py
+```
+
+Install Python here (and add it to PATH):
+_https://www.python.org/downloads/_
 
 You will also need to create a bot on the discord developer portal:
 _https://discord.com/developers/applications_
