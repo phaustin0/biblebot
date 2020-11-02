@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 import json
-from . import settings
+from src import settings
 
 token = settings.token
 
@@ -100,7 +100,10 @@ async def kjv(ctx, *, ref):
             if ref[1] == verse['field'][2]:
                 for j in ref[2]:
                     if j == verse['field'][3]:
-                        await ctx.send(f"`{books[book_index.get(ref[0]) - 1]} {str(verse['field'][2])}:{str(verse['field'][3])}`")
+                        b = books[book_index.get(ref[0]) - 1]
+                        if b[0] == '1' or b[0] == '2' or b[0] == '3':
+                            b = f'{b[:1]} {b[1:]}'
+                        await ctx.send(f"`{b} {str(verse['field'][2])}:{str(verse['field'][3])}`")
                         await ctx.send(f"> {str(verse['field'][4])}")
 
 
