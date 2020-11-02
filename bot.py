@@ -122,6 +122,15 @@ async def short(ctx, *, ref):
             string += f'{i}'
             ref = string
     index = book_index[ref]
-    await ctx.send(f'{ref} -> {books_short[index - 1]}')
+
+    l = ref
+    s = books_short[index - 1]
+
+    if l[0] == '1' or l[0] == '2' or l[0] == '3':
+        l = f'{l[:1]} {l[1:]}'
+    if s[0] == '1' or s[0] == '2' or s[0] == '3':
+        s = f'{l[:1]} {s[1:]}'
+
+    await ctx.send(f'{l} -> {s}')
 
 bot.run(token)
