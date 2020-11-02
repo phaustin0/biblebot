@@ -129,7 +129,7 @@ async def short(ctx, *, ref):
     if l[0] == '1' or l[0] == '2' or l[0] == '3':
         l = f'{l[:1]} {l[1:]}'
     if s[0] == '1' or s[0] == '2' or s[0] == '3':
-        s = f'{l[:1]} {s[1:]}'
+        s = f'{s[:1]} {s[1:]}'
 
     await ctx.send(f'{l} -> {s}')
 
