@@ -3,9 +3,10 @@ from discord.ext import commands
 import json
 from src import settings
 
+# token of bot (you will never know what it is)
 token = settings.token
 
-# define books and their respective indices
+# define books and their respective short forms and indices
 books = ["Genesis", "Exodus", "Leviticus", "Numbers", "Deuteronomy", "Joshua", "Judges", "Ruth", "1Samuel", "2Samuel",
          "1Kings", "2Kings", "1Chronicles", "2Chronicles", "Ezra", "Nehemiah", "Esther", "Job", "Psalms",
          "Proverbs", "Ecclesiastes", "Song of Solomon", "Isaiah", "Jeremiah", "Lamentations", "Ezekiel", "Daniel",
@@ -25,7 +26,7 @@ books_short = ["Gen", "Ex", "Lev", "Num", "Deu", "Jos", "Jud", "Ruth", "1Sam", "
                "Rev"]
 
 
-# adding books to list
+# adding books to a list
 book_index = {}
 
 for i in range(len(books)):
@@ -38,13 +39,17 @@ for i in range(len(books_short)):
 with open('./bible_verses/verses.json', 'r') as f:
     bible = json.load(f)
 
+# list of all the verses
 verses = bible['resultset']['row']
 
+# creation of bot
 bot = commands.Bot(command_prefix='.')
 
+# remove default help command to facilitate custom help command
 bot.remove_command('help')
 
 
+# manipulate reference given to make it easier to pull verses from json file
 def parse_reference(ref):
     # Should contain the list of all the verses
     verses_list = []
@@ -60,6 +65,7 @@ def parse_reference(ref):
     book = data[0]
     verses = data[1]
 
+    # manipulation happening right here
     temp_list = verses.split(",")
     for v in temp_list:
         if "-" not in v:
@@ -73,31 +79,48 @@ def parse_reference(ref):
     return ["".join(book.split(" ")[:-1]), int(book.split(" ")[-1]), verses_list]
 
 
+# print ready to console to signal its readiness and change status
 @bot.event
 async def on_ready():
     await bot.change_presence(activity=discord.Game(name="Bible"))
     print('ready')
 
 
+# check for errors and send an error message to help user understand the commands
 @bot.event
 async def on_command_error(ctx, error):
+    # if user typed unknown command
     if isinstance(error, commands.CommandNotFound):
         await ctx.send('Command not found. Please type `.help` for existing commands or check your spelling.')
+
+    # if user missed a parameter
     if isinstance(error, commands.MissingRequiredArgument):
         await ctx.send('There is a missing parameter. Please type in the required parameter.')
 
 
-@bot.command(help='Clears a default amount of 5 messages if not specified.')
+# useless command nobody should know about
+@bot.command()
 async def clear(ctx, amount=5):
     await ctx.channel.purge(limit=amount + 1)
 
 
-@bot.command(help='Prints out a specified Bible verse.')
+# bulk of the bot. returns bible verses
+@bot.command()
 async def kjv(ctx, *, ref):
+
+    # manipulate reference
     ref = parse_reference(ref)
+
+    # looks in every verse in the json file
     for verse in verses:
+
+        # look for the book
         if book_index[ref[0]] == verse['field'][1]:
+
+            # look for the chapter
             if ref[1] == verse['field'][2]:
+
+                # print out every verse stated
                 for j in ref[2]:
                     if j == verse['field'][3]:
                         b = books[book_index.get(ref[0]) - 1]
@@ -107,14 +130,18 @@ async def kjv(ctx, *, ref):
                         await ctx.send(f"> {str(verse['field'][4])}")
 
 
+# custom help command in case of need
 @bot.command()
 async def help(ctx):
     await ctx.send('This bot prints out the bible verse. To print out a bible verse, use this command -> `.kjv {book chapter:verses}`')
     await ctx.send('You can type out full name of book, or use the short form. To find compatible short forms, type this -> `.short {book}`')
 
 
+# tells user the short form of the book in case the book name is too long or easily misspelled
 @bot.command()
 async def short(ctx, *, ref):
+
+    # remove spaces to help match easier
     if ' ' in ref:
         string = ''
         r = ref.split(' ')
@@ -123,6 +150,7 @@ async def short(ctx, *, ref):
             ref = string
     index = book_index[ref]
 
+    # add back the spaces
     l = ref
     s = books_short[index - 1]
 
@@ -133,4 +161,6 @@ async def short(ctx, *, ref):
 
     await ctx.send(f'{l} -> {s}')
 
+
+# actually run the bot (with the token you will never know)
 bot.run(token)
