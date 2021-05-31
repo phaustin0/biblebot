@@ -23,7 +23,7 @@ books_short = ["Gen", "Ex", "Lev", "Num", "Deu", "Jos", "Jud", "Ruth", "1Sam", "
                "Pro", "Ecc", "Song", "Isa", "Jer", "Lam", "Eze", "Dan",
                "Hos", "Joel", "Amos", "Oba", "Jonah", "Micah", "Nah", "Hab", "Zep", "Hag", "Zec",
                "Mal", "Mat", "Mk", "Lk", "Jn", "Acts", "Rom", "1Cor", "2Cor", "Gal",
-               "Eph", "Philippians", "Col", "1Thes", "2Thes", "1Tim", "2Tim",
+               "Eph", "Phil", "Col", "1Thes", "2Thes", "1Tim", "2Tim",
                "Titus", "Phmn", "Heb", "Jam", "1Pet", "2Pet", "1Jn", "2Jn", "3Jn", "Jude",
                "Rev"]
 
